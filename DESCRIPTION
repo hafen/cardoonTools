@@ -1,0 +1,16 @@
+Package: cardoonTools
+Type: Package
+Title: cardoonTools
+Version: 0.1
+Date: 2014-03-12
+Author: Ryan Hafen
+Maintainer: Ryan Hafen <ryan.hafen@pnnl.gov>
+Description: Experimental tools for R integration in cardoon.
+License: BSD_3_clause + file LICENSE
+LazyLoad: yes
+LazyData: yes
+Depends:
+    R (>= 2.15.1),
+    base64enc,
+    lattice,
+    ggplot2
