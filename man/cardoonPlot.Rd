@@ -11,10 +11,11 @@ cardoonPlot(plotObj, ...)
   \item{\ldots}{arguments passed to \code{\link{png}}}
 }
 \value{
-a base64 encoded string containing png
+a base64 encoded png string
 }
 \description{
-Take a plot expression or object and turn it into a
+Take a plot expression or object and turn it into a base64
+encoded png string for embedding in a browser
 }
 \examples{
 cardoonPlot(expression(plot(1:10)))

@@ -1,11 +1,11 @@
 #' cardoonPlot
 #' 
-#' Take a plot expression or object and turn it into a 
+#' Take a plot expression or object and turn it into a base64 encoded png string for embedding in a browser
 #' 
 #' @param plotObj a lattice or ggplot object, or an expression of R base plotting commands
 #' @param \ldots arguments passed to \code{\link{png}}
 #' 
-#' @return a base64 encoded string containing png
+#' @return a base64 encoded png string
 #' 
 #' @examples
 # R expressions that generate plots:
