@@ -49,7 +49,7 @@ cardoonPlot <- function(plotObj, ...) {
    b64 <- base64enc:::base64encode(readBin(file, "raw", n = bytes))
    file.remove(file)
 
-   paste("data:image/png;base64,", b64, sep = "")   
+   paste(b64)
 }
 
 plotObject <- function(x)
