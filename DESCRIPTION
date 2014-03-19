@@ -13,4 +13,5 @@ Depends:
     R (>= 2.15.1),
     base64enc,
     lattice,
-    ggplot2
+    ggplot2,
+    jsonlite
