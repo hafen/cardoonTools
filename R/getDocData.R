@@ -39,6 +39,12 @@ getDocData <- function(functionName) {
       paste(tmp, collapse = "\n")
    })
    
+   args <- do.call(rbind, lapply(seq_along(argNames), function(i) {
+      tmp <- strsplit(argNames[i], ",")[[1]]
+      tmp <- gsub(" +", "", tmp)
+      data.frame(name = tmp, desc = argDescs[i], stringsAsFactors = FALSE)
+   }))
+   
    examples <- docText[[which(grepl("\\\\examples", classes))]]
    examples$sep = ""
    examples <- do.call(paste, examples)
