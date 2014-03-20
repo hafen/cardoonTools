@@ -2,13 +2,25 @@
 \alias{cardoonPlot}
 \title{cardoonPlot}
 \usage{
-cardoonPlot(plotObj, ...)
+cardoonPlot(plotObj, type = c("png", "pdf"), width = 480, height = 480,
+  res = 72, ...)
 }
 \arguments{
   \item{plotObj}{a lattice or ggplot object, or an
   expression of R base plotting commands}
 
-  \item{\ldots}{arguments passed to \code{\link{png}}}
+  \item{type}{the type of plot to create (currently png or
+  pdf)}
+
+  \item{width}{width of plot, in pixels}
+
+  \item{height}{width of plot, in pixels}
+
+  \item{res}{nominal resolution in ppi which will be
+  recorded in the file, if a positive integer}
+
+  \item{\ldots}{arguments passed to \code{\link{png}} or
+  \code{\link{pdf}}}
 }
 \value{
 a base64 encoded png string

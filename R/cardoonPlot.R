@@ -3,7 +3,11 @@
 #' Take a plot expression or object and turn it into a base64 encoded png string for embedding in a browser
 #' 
 #' @param plotObj a lattice or ggplot object, or an expression of R base plotting commands
-#' @param \ldots arguments passed to \code{\link{png}}
+#' @param type the type of plot to create (currently png or pdf)
+#' @param width width of plot, in pixels
+#' @param height width of plot, in pixels
+#' @param res nominal resolution in ppi which will be recorded in the file, if a positive integer
+#' @param \ldots arguments passed to \code{\link{png}} or \code{\link{pdf}}
 #' 
 #' @return a base64 encoded png string
 #' 
@@ -32,24 +36,40 @@
 #' p <- qplot(mpg, wt, data = mtcars)
 #' cardoonPlot(p)
 #' @export
-cardoonPlot <- function(plotObj, ...) {
+cardoonPlot <- function(plotObj, type = c("png", "pdf"), width = 480, height = 480, res = 72, ...) {
    # temporarily write to disk
-   file <- tempfile(fileext = ".png")
-
-   png(file, ...)
-      res <- try(plotObject(plotObj), silent = TRUE)
-   dev.off()
-
-   # wait until after device is closed to throw error
-   if(inherits(res, "try-error"))
-      stop(geterrmessage())
-
-   # read in and encode - final output can go in <img src=''>
-   bytes <- file.info(file)$size
-   b64 <- base64enc:::base64encode(readBin(file, "raw", n = bytes))
-   file.remove(file)
-
-   paste(b64)
+   if(!all(type %in% c("png", "pdf")))
+      stop("Supported types are 'pdf' and 'png'")
+   
+   # store base64 encoded files here
+   result <- list()
+   
+   for(plotType in type) {
+      file <- tempfile(fileext = sprintf(".%s", plotType))
+      
+      if(plotType == "png") {
+         png(file, width = width, height = height, res = res, ...)
+      } else if(plotType == "pdf") {
+         # pdf dimensions are in inches
+         # dividing by res gives a commensurate result to png
+         pdf(file, width = width / res, height = height / res, ...)
+      }
+      
+      plotResult <- try(plotObject(plotObj), silent = TRUE)
+      
+      dev.off()
+      
+      # wait until after device is closed to throw error
+      if(inherits(plotResult, "try-error"))
+         stop(geterrmessage())
+      
+      # read in and encode - final output can go in <img src=''>
+      bytes <- file.info(file)$size
+      result[[plotType]] <- base64enc:::base64encode(readBin(file, "raw", n = bytes))
+      file.remove(file)
+   }
+   # convert to json?
+   result
 }
 
 plotObject <- function(x)
